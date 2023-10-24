@@ -1,0 +1,46 @@
+You are given an array arr[] of N integers. The task is to find the smallest positive number missing from the array.
+
+Note: Positive number starts from 1.
+
+Example 1:
+
+Input:
+N = 5
+arr[] = {1,2,3,4,5}
+Output: 6
+Explanation: Smallest positive missing 
+number is 6.
+
+
+
+
+def findSmallestMissing(arr, n):
+    # Separate positive and non-positive numbers
+    pos_idx = 0
+    for i in range(n):
+        if arr[i] <= 0:
+            arr[i], arr[pos_idx] = arr[pos_idx], arr[i]
+            pos_idx += 1
+
+    # Create a new array to store positive values
+    pos_arr = arr[pos_idx:]
+
+    # Mark elements as negative to indicate presence
+    for num in pos_arr:
+        if abs(num) <= len(pos_arr) and pos_arr[abs(num) - 1] > 0:
+            pos_arr[abs(num) - 1] = -pos_arr[abs(num) - 1]
+
+    # Find the first positive element
+    for i in range(len(pos_arr)):
+        if pos_arr[i] > 0:
+            return i + 1
+
+    # If all elements are negative, return n+1
+    return len(pos_arr) + 1
+
+# Example usage:
+if __name__ == "__main__":
+    arr = [1, 2, 3, 4, 5]
+    n = len(arr)
+    result = findSmallestMissing(arr, n)
+    print(result)  # Output: 6
